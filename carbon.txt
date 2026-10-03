@@ -1,0 +1,14 @@
+# carbon.txt v0.5 — Green Web Foundation sustainability disclosure index
+# https://carbontxt.org/syntax
+version = "0.5"
+last_updated = 2026-10-02
+
+[org]
+disclosures = [
+    { doc_type = "other", url = "https://github.com/Mike-Demo/eat-well", domain = "github.com", title = "Eat Well project page — this is a tiny static demo site (HTML/JS/PNG, no backend, no tracking) with a negligible hosting footprint" },
+]
+
+[upstream]
+services = [
+    { domain = "view.fast", service_type = ["static-hosting"] },
+]

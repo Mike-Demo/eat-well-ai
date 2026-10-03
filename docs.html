@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs — Eat Well AI</title>
+<meta name="description" content="Documentation for Eat Well AI: natural-language restaurant search for people with dietary needs, powered by Qwen3 running in the browser.">
+<meta name="theme-color" content="#0b0e11">
+<link rel="icon" href="favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: #0b0e11; color: #cfd6dd;
+    font-family: "Press Start 2P", monospace;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 48px 16px 40px;
+  }
+  main { width: 720px; max-width: 94vw; }
+  h1 { font-size: 18px; color: #3ecf8e; margin: 0 0 8px; text-align: center; }
+  .sub { font-size: 9px; color: #96a0aa; margin-bottom: 30px; text-align: center; line-height: 1.8; }
+  section {
+    background: #161c22; border: 1px solid #262f38; border-radius: 14px;
+    padding: 24px; margin-bottom: 18px;
+  }
+  h2 { font-size: 12px; color: #3ecf8e; margin: 0 0 14px; line-height: 1.6; }
+  p, li { font-size: 9px; line-height: 2; color: #aeb7c0; margin: 0 0 10px; }
+  ul { padding-left: 18px; margin: 0 0 10px; }
+  code {
+    font-family: inherit; font-size: 8px; color: #3ecf8e;
+    background: #0b0e11; border: 1px solid #313c47; border-radius: 4px; padding: 2px 6px;
+  }
+  pre {
+    background: #0b0e11; border: 1px solid #313c47; border-radius: 8px;
+    padding: 14px; overflow-x: auto; margin: 0 0 10px;
+  }
+  pre code { border: none; background: none; padding: 0; }
+  a { color: #3ecf8e; }
+  .back { margin-top: 10px; font-size: 8px; color: #69727c; text-align: center; line-height: 2; }
+  .back a { text-decoration: none; }
+  .back a:hover { text-decoration: underline; }
+  footer { margin-top: 26px; text-align: center; font-size: 8px; color: #69727c; line-height: 2; }
+</style>
+</head>
+<body>
+<main>
+  <h1>EAT WELL AI — DOCS</h1>
+  <p class="sub">everything about the app, the AI, and the data</p>
+
+  <section>
+    <h2>What is this?</h2>
+    <p>Eat Well AI is a natural-language restaurant finder for people with dietary needs: vegan, vegetarian, gluten-free, kosher, and halal. Demo's friend Miriam keeps kosher and has trouble finding places to eat. Demo is vegan, and they eat out together often.</p>
+    <p>Type what you want in plain English ("vegan pizza in Chicago", "kosher in Miami") and the app searches 1,017 restaurants across 37 cities.</p>
+  </section>
+
+  <section>
+    <h2>How the AI search works</h2>
+    <p>The AI runs entirely in your browser. No server, no API key, nothing leaves your device.</p>
+    <ul>
+      <li><strong>Model:</strong> Qwen3-0.6B, Alibaba's open-source model (Apache 2.0), running via <a href="https://github.com/mlc-ai/web-llm">WebLLM</a> with WebGPU.</li>
+      <li><strong>First load:</strong> downloads ~400MB once, then works offline.</li>
+      <li><strong>Browser:</strong> you need Chrome or Edge with WebGPU for the AI search. The restaurant list works everywhere.</li>
+      <li><strong>Pipeline:</strong> your query goes to Qwen with a system prompt that shapes its answer into a JSON filter object, <code>{diets, city, keywords}</code>. Plain JavaScript applies those filters to the local database.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>The data</h2>
+    <p>1,017 restaurants across 37 cities (14 US, 5 Canadian, 5 UK, 13 additional US), each tagged for vegan, vegetarian, gluten-free, kosher, and halal options. Listings link to MapQuest, with QR codes for the badge companion. HappyCow links appear where verified.</p>
+    <p>Menus change. Verify dietary needs directly with the restaurant. Listings were researched in October 2026.</p>
+  </section>
+
+  <section>
+    <h2>Run it locally</h2>
+    <p>Static site. Serve the folder, open it in Chrome or Edge:</p>
+    <pre><code>python3 -m http.server 8000
+# then open http://localhost:8000</code></pre>
+    <p>Source: <a href="https://github.com/Mike-Demo/eat-well-ai">github.com/Mike-Demo/eat-well-ai</a> (MIT).</p>
+  </section>
+
+  <section>
+    <h2>Admin: add your own listings</h2>
+    <p>The app has a small admin panel for adding custom listings. Your browser stores them in localStorage:</p>
+    <ul>
+      <li>Open the <a href="admin.html">admin login page</a> and enter the admin password.</li>
+      <li><strong>Add manually:</strong> name, city, cuisine, price, diets, notes.</li>
+      <li><strong>Upload CSV</strong> with columns <code>name,city,cuisine,price,diets,area,note,rating,map_url</code>. Separate diets with <code>;</code>. Grab the <a href="sample-listings.csv" download>sample CSV</a> for the format.</li>
+      <li><strong>My listings:</strong> review and remove anything you added.</li>
+    </ul>
+    <p>The password gate is demo-grade. It ships in the site's JavaScript, so it keeps honest visitors out without real security.</p>
+  </section>
+
+  <section>
+    <h2>Data sources &amp; credit</h2>
+    <ul>
+      <li>Map data and listing links via MapQuest.</li>
+      <li>HappyCow links where community listings were verified.</li>
+      <li>Pixel art made with Adobe Firefly.</li>
+      <li>Built for the Hacktoberfest DEV Weekend Challenge, October 2026.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Privacy</h2>
+    <p>Your device runs the searches with the in-browser model. The site uses private, cookieless analytics. The restaurant data is static and public.</p>
+  </section>
+
+  <p class="back"><a href="index.html">&larr; back to Eat Well AI</a></p>
+  <footer>made by <a href="https://mikedemo.com">Mike Demopoulos</a> &middot; MIT licensed</footer>
+</main>
+</body>
+</html>

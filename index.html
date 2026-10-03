@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eat Well — dietary restaurant finder for the Tufty 2350 badge</title>
+<meta name="description" content="Playable web demo of Eat Well: 557 vegan, vegetarian, gluten-free, kosher and halal restaurant picks across 14 US cities, searchable in plain English with Qwen3 running in your browser, with a MapQuest QR code for every spot.">
+<meta name="author" content="Mike Demopoulos">
+<link rel="canonical" href="https://eat-well-ai.view.fast/">
+<meta name="theme-color" content="#0b0e11">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Eat Well">
+<meta property="og:title" content="Eat Well — dietary restaurant finder for the Tufty 2350 badge">
+<meta property="og:description" content="Playable web demo of Eat Well: 557 vegan, vegetarian, gluten-free, kosher and halal restaurant picks across 14 US cities, searchable in plain English with Qwen3 running in your browser, with a MapQuest QR code for every spot.">
+<meta property="og:url" content="https://eat-well-ai.view.fast/">
+<meta property="og:image" content="https://eat-well-ai.view.fast/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pixel-art night scene with the Eat Well logo and three smiling food characters">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Eat Well — dietary restaurant finder for the Tufty 2350 badge">
+<meta name="twitter:description" content="Playable web demo: 462 vegan, vegetarian, gluten-free, kosher and halal picks across 12 US cities, with a MapQuest QR code for every spot.">
+<meta name="twitter:image" content="https://eat-well-ai.view.fast/og-image.png">
+<meta name="twitter:image:alt" content="Pixel-art night scene with the Eat Well logo and three smiling food characters">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Eat Well",
+  "alternateName": "Eat Well — Tufty 2350 web demo",
+  "description": "Playable web demo of Eat Well, a dietary restaurant finder for the Pimoroni Tufty 2350 badge. Browse 557 curated vegan, vegetarian, gluten-free, kosher and halal restaurants across 14 US cities; every listing shows a scannable MapQuest QR code.",
+  "url": "https://eat-well-ai.view.fast/",
+  "image": "https://eat-well-ai.view.fast/og-image.png",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Web",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": {
+    "@type": "Person",
+    "name": "Mike Demopoulos",
+    "url": "https://mikedemo.com",
+    "sameAs": [
+      "https://github.com/Mike-Demo",
+      "https://x.com/Mike_Demo",
+      "https://www.instagram.com/mdemop",
+      "https://www.threads.com/@mdemop",
+      "https://bsky.app/profile/mikedemo.bsky.social",
+      "https://facebook.com/mikedemo42",
+      "https://mike-demo.tumblr.com",
+      "https://www.linkedin.com/in/mikedemopoulos"
+    ]
+  },
+  "license": "https://github.com/Mike-Demo/eat-well/blob/main/LICENSE.md",
+  "isBasedOn": "https://github.com/Mike-Demo/eat-well"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: #0b0e11; color: #cfd6dd;
+    font-family: "Press Start 2P", monospace;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 28px 16px 40px;
+  }
+  h1 { font-size: 18px; color: #3ecf8e; margin: 0 0 6px; text-align: center; }
+  .sub { font-size: 9px; color: #96a0aa; margin-bottom: 18px; text-align: center; line-height: 1.8; }
+  .sub a { color: #3ecf8e; }
+  .badge {
+    background: #161c22; border-radius: 26px; padding: 26px 26px 22px;
+    box-shadow: 0 18px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+    border: 1px solid #262f38;
+  }
+  .bezel {
+    background: #05070a; border-radius: 12px; padding: 12px;
+    border: 1px solid #000;
+  }
+  canvas {
+    display: block; width: 640px; max-width: 86vw; height: auto;
+    image-rendering: pixelated; image-rendering: crisp-edges;
+    background: #10161a; border-radius: 4px;
+  }
+  .buttons { display: flex; justify-content: space-between; margin-top: 18px; padding: 0 6px; }
+  .cluster { display: flex; gap: 10px; }
+  .btn {
+    width: 58px; height: 58px; border-radius: 50%;
+    background: #232c35; border: 1px solid #313c47; color: #cfd6dd;
+    font-family: inherit; font-size: 11px; cursor: pointer;
+    box-shadow: 0 4px 0 #10151a, 0 6px 14px rgba(0,0,0,.4);
+    user-select: none; -webkit-user-select: none; touch-action: manipulation;
+  }
+  .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #10151a; }
+  .btn.a { color: #3ecf8e; border-color: #3ecf8e55; }
+  .keys { font-size: 8px; color: #69727c; margin-top: 16px; text-align: center; line-height: 2; }
+  .note { font-size: 8px; color: #69727c; margin-top: 22px; max-width: 640px; text-align: center; line-height: 2; }
+  .note a { color: #3ecf8e; }
+  footer { margin-top: 26px; text-align: center; }
+  .byline { font-size: 8px; color: #69727c; margin-bottom: 12px; }
+  .socials { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 14px; max-width: 640px; }
+  .socials a { font-size: 8px; color: #3ecf8e; text-decoration: none; line-height: 2; }
+  .socials a:hover { text-decoration: underline; }
+  .ai-search {
+    width: 640px; max-width: 92vw; margin-bottom: 22px;
+    background: #161c22; border: 1px solid #262f38; border-radius: 14px;
+    padding: 16px 16px 14px;
+  }
+  .ai-head { font-size: 11px; color: #3ecf8e; margin-bottom: 10px; }
+  .ai-badge {
+    font-size: 7px; color: #96a0aa; border: 1px solid #313c47;
+    border-radius: 8px; padding: 3px 8px; margin-left: 8px; vertical-align: 2px;
+  }
+  .ai-row { display: flex; gap: 8px; }
+  #ai-input {
+    flex: 1; font-family: inherit; font-size: 9px; color: #cfd6dd;
+    background: #0b0e11; border: 1px solid #313c47; border-radius: 8px;
+    padding: 10px 12px; outline: none;
+  }
+  #ai-input:focus { border-color: #3ecf8e; }
+  #ai-ask {
+    font-family: inherit; font-size: 9px; color: #0b0e11; cursor: pointer;
+    background: #3ecf8e; border: none; border-radius: 8px; padding: 0 18px;
+  }
+  #ai-ask:active { transform: translateY(2px); }
+  .ai-status { font-size: 7px; color: #69727c; margin-top: 8px; line-height: 1.8; }
+  .ai-parsed { font-size: 8px; color: #3ecf8e; margin: 10px 0 8px; line-height: 1.8; }
+  .ai-empty { font-size: 8px; color: #96a0aa; margin: 8px 0; line-height: 1.8; }
+  .ai-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin-top: 4px; }
+  .ai-card {
+    background: #0b0e11; border: 1px solid #262f38; border-radius: 8px; padding: 10px;
+  }
+  .ai-name { font-size: 8px; color: #ffffff; margin-bottom: 6px; line-height: 1.6; }
+  .ai-meta { font-size: 7px; color: #96a0aa; line-height: 1.8; }
+  .ai-link { margin-top: 6px; }
+  .ai-link a { font-size: 7px; color: #3ecf8e; }
+  .ai-more { font-size: 7px; color: #69727c; margin-top: 8px; }
+  /* --- admin overlay --- */
+  #adminOverlay {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(5,7,10,.84);
+    display: flex; align-items: center; justify-content: center;
+    padding: 18px;
+  }
+  #adminOverlay[hidden] { display: none; }
+  .admin-panel {
+    width: 600px; max-width: 94vw; max-height: 88vh; overflow-y: auto;
+    background: #161c22; border: 1px solid #313c47; border-radius: 14px;
+    padding: 20px 20px 16px; color: #cfd6dd;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif; font-size: 14px;
+  }
+  .admin-head {
+    font-family: "Press Start 2P", monospace; font-size: 12px; color: #3ecf8e;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .admin-x { background: #232c35; color: #cfd6dd; border: 1px solid #313c47; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 13px; }
+  .admin-p { font-size: 13px; line-height: 1.7; color: #96a0aa; margin: 0 0 12px; }
+  .admin-p code { color: #3ecf8e; font-size: 12px; }
+  .admin-row { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .admin-panel input[type=text], .admin-panel input[type=password], .admin-panel input[type=number], .admin-panel input[type=url], .admin-panel select, .admin-panel textarea {
+    font-family: inherit; font-size: 13px; color: #cfd6dd;
+    background: #0b0e11; border: 1px solid #313c47; border-radius: 8px;
+    padding: 9px 10px; outline: none; width: 100%;
+  }
+  .admin-panel input:focus, .admin-panel select:focus, .admin-panel textarea:focus { border-color: #3ecf8e; }
+  .admin-btn {
+    font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+    background: #3ecf8e; color: #0b0e11; border: none; border-radius: 8px; padding: 10px 18px;
+    white-space: nowrap;
+  }
+  .admin-btn:active { transform: translateY(2px); }
+  .admin-err { color: #e06c75; font-size: 13px; }
+  .admin-ok { color: #3ecf8e; font-size: 13px; line-height: 1.6; }
+  .admin-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .admin-tab { background: #0b0e11; color: #96a0aa; border: 1px solid #313c47; border-radius: 8px; padding: 8px 12px; font-size: 13px; cursor: pointer; font-family: inherit; }
+  .admin-tab.on { color: #3ecf8e; border-color: #3ecf8e; }
+  .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .admin-grid .full { grid-column: 1 / -1; }
+  .admin-panel label.flabel { display: block; font-size: 11px; color: #69727c; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .04em; }
+  .diets-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .diets-row label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #cfd6dd; }
+  .diets-row input { width: auto; }
+  .admin-link { color: #3ecf8e; }
+  .admin-dim { font-size: 12px; }
+  .clist-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #0b0e11; border: 1px solid #262f38; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+  .clist-name { font-size: 13px; color: #fff; }
+  .clist-meta { font-size: 12px; color: #69727c; margin-top: 3px; }
+  .clist-del { background: none; border: 1px solid #e06c7555; color: #e06c75; border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 12px; font-family: inherit; }
+  @media (max-width: 520px) { .admin-grid { grid-template-columns: 1fr; } }
+</style>
+<script defer src="https://umami-lite.view.fast/tracker.js" data-website-id="7d0b51cb-f2ae-4106-ba03-2df4098a186e"></script>
+</head>
+<body>
+  <h1>EAT WELL</h1>
+  <div class="sub">dietary restaurant finder &middot; AI-powered search<br>
+  <a href="https://github.com/Mike-Demo/eat-well">github.com/Mike-Demo/eat-well</a></div>
+
+  <section class="ai-search" aria-label="AI restaurant search">
+    <div class="ai-head">Ask Qwen <span class="ai-badge">runs 100% in your browser</span></div>
+    <div class="ai-row">
+      <input id="ai-input" type="text" placeholder='Try "vegan pizza in Chicago" or "kosher in Miami"' aria-label="Ask in plain English">
+      <button id="ai-ask">Ask</button>
+    </div>
+    <div id="ai-status" class="ai-status">Qwen3 loads on first visit (no server, no tracking).</div>
+    <div id="ai-results"></div>
+  </section>
+
+  <div class="badge">
+    <div class="bezel"><canvas id="screen" width="320" height="240"></canvas></div>
+    <div class="buttons">
+      <div class="cluster">
+        <button class="btn" data-btn="up" aria-label="Up">&#9650;</button>
+        <button class="btn" data-btn="down" aria-label="Down">&#9660;</button>
+      </div>
+      <div class="cluster">
+        <button class="btn a" data-btn="a" aria-label="A">A</button>
+        <button class="btn" data-btn="b" aria-label="B">B</button>
+        <button class="btn" data-btn="c" aria-label="C">C</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="keys">keyboard: &uarr;/&darr; move &middot; Z / Enter = A &middot; X / Esc = B &middot; C = C<br>tap the badge buttons or use your keyboard</div>
+
+  <div id="adminOverlay" hidden>
+    <div class="admin-panel" role="dialog" aria-label="Admin">
+      <div class="admin-head"><span>EAT WELL admin</span><button id="adminClose" class="admin-x" aria-label="Close">X</button></div>
+      <div id="adminLogin">
+        <p class="admin-p">Enter the admin password to manage listings.</p>
+        <div class="admin-row">
+          <input id="adminPass" type="password" placeholder="Password" autocomplete="off" aria-label="Admin password" style="flex:1;min-width:180px">
+          <button id="adminGo" class="admin-btn" type="button">Log in</button>
+        </div>
+        <p id="adminErr" class="admin-err" hidden>Wrong password.</p>
+      </div>
+      <div id="adminMain" hidden>
+        <div class="admin-tabs">
+          <button class="admin-tab on" data-tab="manual" type="button">Add manually</button>
+          <button class="admin-tab" data-tab="csv" type="button">Upload CSV</button>
+          <button class="admin-tab" data-tab="list" type="button">My listings <span id="adminCount"></span></button>
+        </div>
+        <div id="tab-manual">
+          <form id="manualForm">
+            <div class="admin-grid">
+              <div><label class="flabel" for="mName">Name *</label><input id="mName" type="text" required></div>
+              <div><label class="flabel" for="mCity">City *</label><input id="mCity" type="text" list="cityList" required><datalist id="cityList"></datalist></div>
+              <div><label class="flabel" for="mCuisine">Cuisine</label><input id="mCuisine" type="text" placeholder="e.g. Italian"></div>
+              <div><label class="flabel" for="mPrice">Price</label><select id="mPrice"><option>$</option><option selected>$$</option><option>$$$</option></select></div>
+              <div class="full"><label class="flabel">Diets</label><div class="diets-row">
+                <label><input type="checkbox" name="diet" value="vegan" checked> Vegan</label>
+                <label><input type="checkbox" name="diet" value="vegetarian"> Vegetarian</label>
+                <label><input type="checkbox" name="diet" value="gluten-free"> Gluten-free</label>
+                <label><input type="checkbox" name="diet" value="kosher"> Kosher</label>
+                <label><input type="checkbox" name="diet" value="halal"> Halal</label>
+              </div></div>
+              <div><label class="flabel" for="mArea">Area / neighborhood</label><input id="mArea" type="text"></div>
+              <div><label class="flabel" for="mRating">Rating (0-5)</label><input id="mRating" type="number" min="0" max="5" step="0.1"></div>
+              <div class="full"><label class="flabel" for="mNote">Note</label><textarea id="mNote" rows="2"></textarea></div>
+              <div class="full"><label class="flabel" for="mUrl">Map URL (optional)</label><input id="mUrl" type="url" placeholder="https://www.mapquest.com/..."></div>
+            </div>
+            <button class="admin-btn" type="submit">Add listing</button>
+          </form>
+          <p id="manualMsg" class="admin-ok" hidden style="margin-top:10px"></p>
+        </div>
+        <div id="tab-csv" hidden>
+          <p class="admin-p">CSV columns: <code>name,city,cuisine,price,diets,area,note,rating,map_url</code><br>Separate multiple diets with <code>;</code> using: vegan, vegetarian, gluten-free, kosher, halal.</p>
+          <p class="admin-p"><a class="admin-link" href="sample-listings.csv" download>Download sample CSV</a> to see the format.</p>
+          <div class="admin-row">
+            <input id="csvFile" type="file" accept=".csv,text/csv" aria-label="CSV file" style="flex:1;min-width:180px">
+            <button id="csvImport" class="admin-btn" type="button">Import</button>
+          </div>
+          <p id="csvMsg" class="admin-ok" hidden></p>
+        </div>
+        <div id="tab-list" hidden>
+          <div id="customList"></div>
+          <p class="admin-p"><button id="exportJson" class="admin-btn" type="button">Export as JSON</button></p>
+          <p class="admin-p admin-dim">Listings are saved in this browser and appear in the app right away. Use Export to back them up or send them to the site owner.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">Demo build for the SELECT badge contest. Menus and dietary practices change &mdash;
+  verify directly with the restaurant. Listings researched October 2026.<br>
+  MIT licensed &middot; pixel art made with Adobe Firefly &middot; map data via MapQuest</div>
+
+  <footer>
+    <div class="byline">made by <a href="https://mikedemo.com" style="color:#3ecf8e">Mike Demopoulos</a></div>
+    <nav class="socials" aria-label="Mike Demopoulos on social media">
+      <a href="https://github.com/Mike-Demo">GitHub</a>
+      <a href="https://x.com/Mike_Demo">X</a>
+      <a href="https://www.instagram.com/mdemop">Instagram</a>
+      <a href="https://www.threads.com/@mdemop">Threads</a>
+      <a href="https://bsky.app/profile/mikedemo.bsky.social">Bluesky</a>
+      <a href="https://facebook.com/mikedemo42">Facebook</a>
+      <a href="https://mike-demo.tumblr.com">Tumblr</a>
+      <a href="https://www.linkedin.com/in/mikedemopoulos">LinkedIn</a>
+      <a href="https://mikedemo.com">Website</a>
+      <a href="mailto:hey.demo@mikedemo.email">Email</a>
+      <a href="docs.html">Docs</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm@0.2.85/lib/index.min.js"></script>
+  <script src="ai-search.js"></script>
+</body>
+</html>

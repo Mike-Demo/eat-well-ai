@@ -1,0 +1,4 @@
+name,city,cuisine,price,diets,area,note,rating,map_url
+"Sunshine Cafe","Madison","American","$$","vegan;vegetarian;gluten-free","Downtown","Cozy brunch spot with a big vegan menu and a gluten-free bakery case.","4.5",""
+"Verde Taqueria","Austin","Mexican","$","vegan;vegetarian","South Congress","Late-night vegan tacos; all salsas made in-house daily.","4.7",""
+"Golden Lotus","Seattle","Vietnamese","$$","vegan;vegetarian;halal","International District","Family-run spot with vegan staples alongside halal meat options.","4.6",""

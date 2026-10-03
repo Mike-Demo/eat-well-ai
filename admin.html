@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin login — Eat Well AI</title>
+<meta name="description" content="Admin login for Eat Well AI, the natural-language restaurant finder for people with dietary needs.">
+<meta name="theme-color" content="#0b0e11">
+<link rel="icon" href="favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: #0b0e11; color: #cfd6dd;
+    font-family: "Press Start 2P", monospace;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 60px 16px 40px;
+  }
+  h1 { font-size: 16px; color: #3ecf8e; margin: 0 0 8px; text-align: center; }
+  .sub { font-size: 9px; color: #96a0aa; margin-bottom: 28px; text-align: center; line-height: 1.8; }
+  .card {
+    background: #161c22; border: 1px solid #262f38; border-radius: 14px;
+    padding: 28px; width: 380px; max-width: 92vw;
+    box-shadow: 0 18px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+  }
+  label { display: block; font-size: 9px; color: #69727c; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .04em; }
+  input[type=password] {
+    width: 100%; background: #0b0e11; border: 1px solid #313c47; border-radius: 8px;
+    color: #cfd6dd; font-family: inherit; font-size: 12px; padding: 12px;
+    margin-bottom: 14px;
+  }
+  input[type=password]:focus { border-color: #3ecf8e; outline: none; }
+  .btn {
+    width: 100%; background: #232c35; border: 1px solid #3ecf8e55; color: #3ecf8e;
+    font-family: inherit; font-size: 11px; cursor: pointer; border-radius: 8px;
+    padding: 14px; box-shadow: 0 4px 0 #10151a;
+  }
+  .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #10151a; }
+  .err { color: #e06c75; font-size: 9px; margin-top: 12px; line-height: 1.8; text-align: center; }
+  .back { margin-top: 26px; font-size: 8px; color: #69727c; text-align: center; line-height: 2; }
+  .back a { color: #3ecf8e; text-decoration: none; }
+  .back a:hover { text-decoration: underline; }
+  .fine { margin-top: 18px; font-size: 7px; color: #4a545e; text-align: center; line-height: 2; max-width: 380px; }
+</style>
+</head>
+<body>
+  <h1>ADMIN LOGIN</h1>
+  <p class="sub">Eat Well AI &middot; listing management</p>
+  <div class="card">
+    <form id="loginForm">
+      <label for="pw">Password</label>
+      <input id="pw" type="password" autocomplete="current-password" aria-label="Admin password" autofocus>
+      <button class="btn" type="submit">Log in</button>
+    </form>
+    <p id="err" class="err" hidden>Wrong password. Try again.</p>
+  </div>
+  <p class="back"><a href="index.html">&larr; back to Eat Well AI</a></p>
+  <p class="fine">Demo-grade gate: the password ships in the site's JavaScript, so this keeps honest visitors out but is not real security. Don't reuse an important password here.</p>
+<script>
+(function () {
+  // Must match ADMIN_PASSWORD in app.js — single source of truth lives there;
+  // this page is a thin login front-door for the same client-side gate.
+  var ADMIN_PASSWORD=<redacted>
+  var form = document.getElementById("loginForm");
+  var pw = document.getElementById("pw");
+  var err = document.getElementById("err");
+  if (sessionStorage.getItem("ew_admin") === "1") {
+    location.replace("index.html");
+    return;
+  }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (pw.value === ADMIN_PASSWORD) {
+      try { sessionStorage.setItem("ew_admin", "1"); } catch (x) {}
+      location.replace("index.html");
+    } else {
+      err.hidden = false;
+      pw.value = "";
+      pw.focus();
+    }
+  });
+})();
+</script>
+</body>
+</html>

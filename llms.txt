@@ -1,0 +1,33 @@
+# Eat Well
+
+> Playable web demo of Eat Well, a dietary restaurant finder built for the Pimoroni Tufty 2350 badge (SELECT badge contest entry). Browse 462 curated vegan, vegetarian, gluten-free, kosher, and halal restaurants across 12 US cities; every listing shows a scannable MapQuest QR code. Menus and dietary practices change — verify directly with the restaurant. Listings researched October 2026.
+
+## Demo
+
+- [Play the demo](https://eat-well-demo.view.fast/): full badge UI emulation in the browser — animated pixel-art splash, city picker, diet filters, results, detail screens with QR codes, credits page. Keyboard and on-screen badge buttons.
+- [Source code](https://github.com/Mike-Demo/eat-well): MIT-licensed badge app, pixel-art pipeline, restaurant dataset, and research notes.
+
+## Coverage
+
+- Cities: San Francisco, Twin Cities (Minneapolis–Saint Paul), Chicago, New York, Los Angeles, Houston, Phoenix, Philadelphia, San Antonio, San Diego, Dallas, San Jose.
+- Diets: vegan, vegetarian, gluten-free, kosher, halal. At least 10 matches per diet per city where honest supply permits; San Francisco and San Jose have fewer than 10 verified kosher options and the app says so rather than inventing listings.
+- "Near me" uses IP geolocation (ipwho.is) to pick the closest covered city.
+
+## Credits
+
+- Built by [Mike Demopoulos](https://mikedemo.com) for the SELECT badge contest.
+- Badge framework: [Badgeware](https://github.com/pimoroni/tufty2350) (Pimoroni Tufty 2350, MIT).
+- Pixel art: Adobe Firefly. Map data and place listings: MapQuest. QR encoding: Segno (BSD-3-Clause).
+
+## Contact
+
+- Website: https://mikedemo.com
+- Email: hey.demo@mikedemo.email
+- GitHub: https://github.com/Mike-Demo
+- X: https://x.com/Mike_Demo
+- Instagram: https://www.instagram.com/mdemop
+- Threads: https://www.threads.com/@mdemop
+- Bluesky: https://bsky.app/profile/mikedemo.bsky.social
+- Facebook: https://facebook.com/mikedemo42
+- Tumblr: https://mike-demo.tumblr.com
+- LinkedIn: https://www.linkedin.com/in/mikedemopoulos
