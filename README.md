@@ -1,18 +1,18 @@
 # Eat Well AI
 
-Natural-language restaurant search for people with dietary needs. Qwen3 runs the whole thing in your browser.
+Natural-language restaurant search for people with dietary needs. Qwen3 runs everything in your browser.
 
 Built for the [Hacktoberfest DEV Weekend Challenge](https://dev.to) (October 2026).
 
 ## The story
 
-Demo's friend Miriam keeps kosher and has trouble finding places to eat. Demo is vegan, and they eat out together often. The original [Eat Well](https://github.com/Mike-Demo/eat-well) is a dietary restaurant finder for the Pimoroni Tufty 2350 badge: 557 curated vegan, vegetarian, gluten-free, kosher, and halal restaurants across 14 US cities.
+Demo's friend Miriam keeps kosher and struggles to find places to eat. Demo is vegan, and they eat out together often. The original [Eat Well](https://github.com/Mike-Demo/eat-well) is a dietary restaurant finder for the Pimoroni Tufty 2350 badge: 557 curated vegan, vegetarian, gluten-free, kosher, and halal restaurants across 14 US cities.
 
 The badge can't run AI. This companion lets you describe what you want instead of tapping through filters:
 
 > "vegan pizza in Chicago"
 > "kosher in Miami"
-> "gluten free tacos"
+> "gluten-free tacos"
 
 Type that in plain English. Qwen3-0.6B, Alibaba's open-source model, turns your words into structured filters on your device, and the app searches the full restaurant database instantly.
 
